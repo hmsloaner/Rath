@@ -27,7 +27,9 @@ class CAM_UV(AlgoInterface):
     def __init__(self, dataSource: List[IRow], fields: List[IFieldMeta], params: Optional[ParamType] = ParamType()):
         super(CAM_UV, self).__init__(dataSource=dataSource, fields=fields, params=params)
         
-    def constructBgKnowledge(self, bgKnowledgesPag: Optional[List[common.BgKnowledgePag]] = [], f_ind: Dict[str, int] = {}):
+    def constructBgKnowledge(self, bgKnowledgesPag: Optional[List[common.BgKnowledgePag]] = None, f_ind: Optional[Dict[str, int]] = None):
+        bgKnowledgesPag = [] if bgKnowledgesPag is None else bgKnowledgesPag
+        f_ind = {} if f_ind is None else f_ind
         import causallearn.graph.GraphNode as GraphNode
         node = [GraphNode(f"X{i+1}") for i in range(len(self.fields))]
         # self.bk = BackgroundKnowledge()
@@ -38,7 +40,9 @@ class CAM_UV(AlgoInterface):
         #         self.bk.add_forbidden_by_node(node[f_ind[k.src]], node[f_ind[k.tar]])
         # return self.bk
         
-    def calc(self, params: Optional[ParamType] = ParamType(), focusedFields: List[str] = [], bgKnowledgesPag: Optional[List[common.BgKnowledgePag]] = [], **kwargs):
+    def calc(self, params: Optional[ParamType] = ParamType(), focusedFields: Optional[List[str]] = None, bgKnowledgesPag: Optional[List[common.BgKnowledgePag]] = None, **kwargs):
+        focusedFields = [] if focusedFields is None else focusedFields
+        bgKnowledgesPag = [] if bgKnowledgesPag is None else bgKnowledgesPag
         array = self.selectArray(focusedFields=focusedFields, params=params)
         # common.checkLinearCorr(array)
         params.__dict__['cache_path'] = None # '/tmp/causal/pc.json'

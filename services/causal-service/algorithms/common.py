@@ -341,7 +341,9 @@ class AlgoInterface:
         self.fields = [*fields]
         # self.data, self.fields = transDataSource(dataSource, fields, params)
     
-    def constructBgKnowledgePag(self, bgKnowledgesPag: Optional[List[BgKnowledgePag]] = [], f_ind: Dict[str, int] = {}):
+    def constructBgKnowledgePag(self, bgKnowledgesPag: Optional[List[BgKnowledgePag]] = None, f_ind: Optional[Dict[str, int]] = None):
+        bgKnowledgesPag = [] if bgKnowledgesPag is None else bgKnowledgesPag
+        f_ind = {} if f_ind is None else f_ind
         from causallearn.graph.GraphNode import GraphNode
         node = [GraphNode(f"X{i+1}") for i in range(len(self.fields))]
         self.bk = BackgroundKnowledge()
@@ -369,7 +371,8 @@ class AlgoInterface:
                     res.append(f.fid)
         return res
     
-    def selectArray(self, focusedFields: List[str] = [], params: OptionalParams = OptionalParams()) -> np.ndarray:
+    def selectArray(self, focusedFields: Optional[List[str]] = None, params: OptionalParams = OptionalParams()) -> np.ndarray:
+        focusedFields = [] if focusedFields is None else focusedFields
         # print('\n\nselectArray', [{f.fid: f for f in self.fields}[ff] for ff in focusedFields])
         print("Fields: ", {f.fid: f for f in self.fields}.keys(), focusedFields)
         focusedFields = self.transFocusedFields(focusedFields)
@@ -387,7 +390,9 @@ class AlgoInterface:
         return [transMeta(f) for f in fields]
     
     def calc(self, params: Optional[ParamType] = ParamType(),
-             focusedFields: List[str] = [], bgKnowledges: Optional[List[BgKnowledge]] = [], **kwargs):
+             focusedFields: Optional[List[str]] = None, bgKnowledges: Optional[List[BgKnowledge]] = None, **kwargs):
+        focusedFields = [] if focusedFields is None else focusedFields
+        bgKnowledges = [] if bgKnowledges is None else bgKnowledges
         pass
     
 def getCausalRequest(Type):
