@@ -17,7 +17,7 @@ class basefunc:
     def postgres_gettable(uri, database, schema):
         engine = create_engine(uri, echo=True)
         res = engine.execute(
-            'select tablename from pg_tables where schemaname=\'' + schema + '\'').fetchall()
+            'select tablename from pg_tables where schemaname=?', (schema, )).fetchall()
         table_list = []
         for row in res:
             for item in row:
