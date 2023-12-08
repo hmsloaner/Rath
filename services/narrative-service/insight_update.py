@@ -195,7 +195,7 @@ def cal_Attribution(breakdown:VectorStr,measures:VectorStr,subDataSource:object,
     first_persent = persent_list[arg_index[0]]/np.sum(persent_list)
     para = {}
     para['persent'] = persent_list
-    if first_persent==np.nan:
+    if np.isnan(first_persent):
         score = max(first_persent-0.5,0)/0.5
         if score!=0:
             explain = explain_Attribution(langType,measures[0],aggrType,str(groupData.index[arg_index[0]]),breakdown[0])
