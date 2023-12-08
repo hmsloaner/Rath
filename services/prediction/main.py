@@ -2,10 +2,10 @@ from flask import Flask, request
 from flask_cors import CORS
 import json
 import numpy as np
-import random
 from classification.classification import classification
 from regression.regression import regression
 from transform import makeTrainingData
+import secrets
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -29,7 +29,7 @@ def controlSplitTrainTest (X, y, split_states: 'list[int]'):
 def mockSplitIndices (size: int, ratio: float):
     indices = []
     for i in range(size):
-        if random.random() > ratio:
+        if secrets.SystemRandom().random() > ratio:
             indices.append(1)
         else:
             indices.append(0)
