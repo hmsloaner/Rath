@@ -326,7 +326,7 @@ class basefunc:
     def druid_gettable(uri, database, schema,**kwargs):
         engine = create_engine(uri, echo=True)
         res = engine.execute(
-            'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = \'' + schema + '\'').fetchall()
+            'SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ?', (schema, )).fetchall()
         table_list = []
         for row in res:
             meta = basefunc.druid_getmeta(database=database, schema=schema, table=row.TABLE_NAME, engine=engine)
