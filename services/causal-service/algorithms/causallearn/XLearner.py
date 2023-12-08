@@ -19,7 +19,7 @@ from causallearn.utils.PCUtils.BackgroundKnowledgeOrientUtils import orient_by_b
 
 def xlearn(dataset: np.ndarray, independence_test_method: str=FCI.fisherz, alpha: float = 0.05, depth: int = -1,
         max_path_length: int = -1, verbose: bool = False, background_knowledge: BackgroundKnowledge | None = None,
-        functional_dependencies: List[common.IFunctionalDep]=[], f_ind={}, fields=[], **kwargs) -> Tuple[FCI.Graph, List[FCI.Edge]]:
+        functional_dependencies: Optional[List[common.IFunctionalDep]]=None, f_ind=None, fields=None, **kwargs) -> Tuple[FCI.Graph, List[FCI.Edge]]:
     """
     Parameters
     ----------
@@ -51,6 +51,9 @@ def xlearn(dataset: np.ndarray, independence_test_method: str=FCI.fisherz, alpha
         If edge.properties have the Property nl, then it is definitely direct. Otherwise,
             it is possibly direct.
     """
+    functional_dependencies = [] if functional_dependencies is None else functional_dependencies
+    f_ind = {} if f_ind is None else f_ind
+    fields = [] if fields is None else fields
 
     if dataset.shape[0] < dataset.shape[1]:
         FCI.warnings.warn("The number of features is much larger than the sample size!")
@@ -326,7 +329,9 @@ class XLearner(AlgoInterface):
     def __init__(self, dataSource: List[IRow], fields: List[IFieldMeta], params: Optional[ParamType] = ParamType()):
         super(XLearner, self).__init__(dataSource, fields, params)
         
-    def constructBgKnowledge(self, bgKnowledges: Optional[List[common.BgKnowledge]] = [], f_ind: Dict[str, int] = {}):
+    def constructBgKnowledge(self, bgKnowledges: Optional[List[common.BgKnowledge]] = None, f_ind: Optional[Dict[str, int]] = None):
+        bgKnowledges = [] if bgKnowledges is None else bgKnowledges
+        f_ind = {} if f_ind is None else f_ind
         node = self.G.get_nodes()
         self.bk = BackgroundKnowledge()
         for k in bgKnowledges:
@@ -336,7 +341,10 @@ class XLearner(AlgoInterface):
                 self.bk.add_forbidden_by_node(node[f_ind[k.src]], node[f_ind[k.tar]])
         return self.bk
     
-    def calc(self, params: Optional[ParamType] = ParamType(), focusedFields: List[str] = [], bgKnowledgesPag: Optional[List[common.BgKnowledgePag]] = [], funcDeps: common.IFunctionalDep = [],  **kwargs):
+    def calc(self, params: Optional[ParamType] = ParamType(), focusedFields: Optional[List[str]] = None, bgKnowledgesPag: Optional[List[common.BgKnowledgePag]] = None, funcDeps: Optional[common.IFunctionalDep] = None,  **kwargs):
+        focusedFields = [] if focusedFields is None else focusedFields
+        bgKnowledgesPag = [] if bgKnowledgesPag is None else bgKnowledgesPag
+        funcDeps = [] if funcDeps is None else funcDeps
         array = self.selectArray(focusedFields=focusedFields, params=params)
         # common.checkLinearCorr(array)
         print(array, array.min(), array.max())

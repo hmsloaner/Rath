@@ -60,7 +60,9 @@ class FCI(AlgoInterface):
     def __init__(self, dataSource: List[IRow], fields: List[IFieldMeta], params: Optional[ParamType] = ParamType()):
         super(FCI, self).__init__(dataSource, fields, params)
         
-    def constructBgKnowledge(self, bgKnowledges: Optional[List[common.BgKnowledge]] = [], f_ind: Dict[str, int] = {}):
+    def constructBgKnowledge(self, bgKnowledges: Optional[List[common.BgKnowledge]] = None, f_ind: Optional[Dict[str, int]] = None):
+        bgKnowledges = [] if bgKnowledges is None else bgKnowledges
+        f_ind = {} if f_ind is None else f_ind
         node = self.G.get_nodes()
         self.bk = BackgroundKnowledge()
         for k in bgKnowledges:
@@ -71,7 +73,9 @@ class FCI(AlgoInterface):
         return self.bk
     
     
-    def calc(self, params: Optional[ParamType] = ParamType(), focusedFields: List[str] = [], bgKnowledges: Optional[List[common.BgKnowledge]] = [], **kwargs):
+    def calc(self, params: Optional[ParamType] = ParamType(), focusedFields: Optional[List[str]] = None, bgKnowledges: Optional[List[common.BgKnowledge]] = None, **kwargs):
+        focusedFields = [] if focusedFields is None else focusedFields
+        bgKnowledges = [] if bgKnowledges is None else bgKnowledges
         array = self.selectArray(focusedFields=focusedFields, params=params)
         # common.checkLinearCorr(array)
         print(array, array.min(), array.max())

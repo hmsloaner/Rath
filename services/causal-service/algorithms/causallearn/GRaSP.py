@@ -35,7 +35,9 @@ class GRaSP(AlgoInterface):
     def __init__(self, dataSource: List[IRow], fields: List[IFieldMeta], params: Optional[ParamType] = ParamType()):
         super(GRaSP, self).__init__(dataSource=dataSource, fields=fields, params=params)
         
-    def constructBgKnowledge(self, bgKnowledgesPag: Optional[List[common.BgKnowledgePag]] = [], f_ind: Dict[str, int] = {}):
+    def constructBgKnowledge(self, bgKnowledgesPag: Optional[List[common.BgKnowledgePag]] = None, f_ind: Optional[Dict[str, int]] = None):
+        bgKnowledgesPag = [] if bgKnowledgesPag is None else bgKnowledgesPag
+        f_ind = {} if f_ind is None else f_ind
         node = self.cg.G.get_nodes()
         # self.bk = BackgroundKnowledge()
         # for k in bgKnowledges:
@@ -45,7 +47,9 @@ class GRaSP(AlgoInterface):
         #         self.bk.add_forbidden_by_node(node[f_ind[k.src]], node[f_ind[k.tar]])
         # return self.bk
         
-    def calc(self, params: Optional[ParamType] = ParamType(), focusedFields: List[str] = [], bgKnowledges: Optional[List[common.BgKnowledge]] = [], **kwargs):
+    def calc(self, params: Optional[ParamType] = ParamType(), focusedFields: Optional[List[str]] = None, bgKnowledges: Optional[List[common.BgKnowledge]] = None, **kwargs):
+        focusedFields = [] if focusedFields is None else focusedFields
+        bgKnowledges = [] if bgKnowledges is None else bgKnowledges
         array = self.selectArray(focusedFields=focusedFields, params=params)
         # common.checkLinearCorr(array)
         params.__dict__['cache_path'] = None # '/tmp/causal/pc.json'

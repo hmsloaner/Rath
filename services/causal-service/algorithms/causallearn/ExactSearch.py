@@ -44,7 +44,10 @@ class ExactSearch(AlgoInterface):
     def __init__(self, dataSource: List[IRow], fields: List[IFieldMeta], params: Optional[ParamType] = ParamType()):
         super(ExactSearch, self).__init__(dataSource=dataSource, fields=fields, params=params)
         
-    def constructGraph(self, bgKnowledges: Optional[List[common.BgKnowledge]] = [], f_ind: Dict[str, int] = {}, focusedFields: List[str] = []):
+    def constructGraph(self, bgKnowledges: Optional[List[common.BgKnowledge]] = None, f_ind: Optional[Dict[str, int]] = None, focusedFields: Optional[List[str]] = None):
+        bgKnowledges = [] if bgKnowledges is None else bgKnowledges
+        f_ind = {} if f_ind is None else f_ind
+        focusedFields = [] if focusedFields is None else focusedFields
         d = len(focusedFields)
         if bgKnowledges is None or len(bgKnowledges) == 0:
             return None, None
@@ -57,7 +60,9 @@ class ExactSearch(AlgoInterface):
             elif bg.type > common.bgKnowledge_threshold[1]:
                 include_graph[f_ind[bg.src], f_ind[bg.tar]] = True
         return super_graph, include_graph
-    def calc(self, params: Optional[ParamType] = ParamType(), focusedFields: List[str] = [], bgKnowledges: Optional[List[common.BgKnowledge]] = [], **kwargs):
+    def calc(self, params: Optional[ParamType] = ParamType(), focusedFields: Optional[List[str]] = None, bgKnowledges: Optional[List[common.BgKnowledge]] = None, **kwargs):
+        focusedFields = [] if focusedFields is None else focusedFields
+        bgKnowledges = [] if bgKnowledges is None else bgKnowledges
         array = self.selectArray(focusedFields=focusedFields, params=params)
         # common.checkLinearCorr(array)
         f_ind = {f: i for i, f in enumerate(focusedFields)}

@@ -29,7 +29,9 @@ class Explainer(common.AlgoInterface):
     def __init__(self, dataSource: List[common.IRow], fields: List[common.IFieldMeta], params: Optional[ParamType] = ParamType()):
         super(Explainer, self).__init__(dataSource=dataSource, fields=fields, params=params)
         
-    def calc(self, params: Optional[ParamType] = ParamType(), focusedFields: List[str] = [], bgKnowledgesPag: Optional[List[common.BgKnowledgePag]] = []):
+    def calc(self, params: Optional[ParamType] = ParamType(), focusedFields: Optional[List[str]] = None, bgKnowledgesPag: Optional[List[common.BgKnowledgePag]] = None):
+        focusedFields = [] if focusedFields is None else focusedFields
+        bgKnowledgesPag = [] if bgKnowledgesPag is None else bgKnowledgesPag
         # array = self.selectArray(focusedFields=focusedFields, params=params)
         self.data = self.dataSource[focusedFields]
         print(self.data, focusedFields, bgKnowledgesPag)
