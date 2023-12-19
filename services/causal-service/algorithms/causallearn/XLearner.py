@@ -237,9 +237,8 @@ def xlearn(dataset: np.ndarray, independence_test_method: str=FCI.fisherz, alpha
         node_x = edge.get_node1()
         node_y = edge.get_node2()
 
-        sep_set = sp.get_sep_set(node_x, node_y)
 
-        if sep_set is not None:
+        if (sep_set := sp.get_sep_set(node_x, node_y)) is not None:
             waiting_to_deleted_edges.append((node_x, node_y, sep_set))
 
     for waiting_to_deleted_edge in waiting_to_deleted_edges:

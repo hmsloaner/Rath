@@ -13,8 +13,7 @@ bp = Blueprint('database', __name__, url_prefix='/api')
 @bp.route('/get_connection', methods=['POST'])
 def get_connection():
     props = json.loads(request.data)
-    func = props['func']
-    if func == 'ping':
+    if (func := props['func']) == 'ping':
         return {
             "success": True
         }

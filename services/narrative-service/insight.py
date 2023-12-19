@@ -323,8 +323,7 @@ def cal_Trend(breakdown:VectorStr,measures:VectorStr,subDataSource:object,aggrTy
     slope, intercept, r, p, se = linregress(range(len(timeseries)), timeseries)
     para = {'slope':slope,'intercept':intercept,'timeseries':timeseries}
     timeseries_avg = timeseries - np.array(range(len(timeseries)))*slope+intercept
-    std = np.std(timeseries_avg)
-    if std==0:
+    if (std := np.std(timeseries_avg))==0:
         score = 1
     else:
         alpha = abs(np.mean(timeseries_avg))/(std+abs(np.mean(timeseries_avg)))
