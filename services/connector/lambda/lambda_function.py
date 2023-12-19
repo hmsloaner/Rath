@@ -5,8 +5,7 @@ client = boto3.client('lambda')
 
 
 def lambda_handler(event, context):
-    func = event['func']
-    if func == 'ping':
+    if (func := event['func']) == 'ping':
         return {
             "success": True
         }

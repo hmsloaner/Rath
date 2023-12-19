@@ -383,8 +383,7 @@ class AlgoInterface:
     def safeFieldMeta(self, fields: List[IFieldMeta]):
         def transMeta(fieldMeta: IFieldMeta):
             meta = IFieldMeta(**fieldMeta.__dict__)
-            cut = meta.fid.find('&(1<<')
-            if cut != -1:
+            if (cut := meta.fid.find('&(1<<')) != -1:
                 meta.fid = meta.fid[:cut]
             return meta
         return [transMeta(f) for f in fields]
