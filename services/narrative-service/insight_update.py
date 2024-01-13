@@ -355,10 +355,10 @@ def cal_Seasonality(breakdown:VectorStr,measures:VectorStr,subDataSource:object,
     timelabel = groupData.index
     timeseries = np.squeeze(groupData[measures[0]].values)
     time = pd.to_datetime(timelabel)
-    winter = np.array([timeseries[i] for i in range(len(time)) if time[i].month in set([12,1,2])])
-    spring = np.array([timeseries[i] for i in range(len(time)) if time[i].month in set([3,4,5])])
-    summer = np.array([timeseries[i] for i in range(len(time)) if time[i].month in set([6,7,8])])
-    autumn = np.array([timeseries[i] for i in range(len(time)) if time[i].month in set([9,10,11])])
+    winter = np.array([timeseries[i] for i in range(len(time)) if time[i].month in {12,1,2}])
+    spring = np.array([timeseries[i] for i in range(len(time)) if time[i].month in {3,4,5}])
+    summer = np.array([timeseries[i] for i in range(len(time)) if time[i].month in {6,7,8}])
+    autumn = np.array([timeseries[i] for i in range(len(time)) if time[i].month in {9,10,11}])
     para = {}
     para['timelabel'] = timelabel
     para['timeseries'] = timeseries
