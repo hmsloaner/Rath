@@ -10,6 +10,8 @@ from typing import List, Tuple, Dict
 from pyscagnostics import scagnostics
 
 import warnings
+import math
+
 warnings.filterwarnings("ignore")
 
 VectorStr = List[str]
@@ -137,7 +139,7 @@ def cal_Attribution(breakdown:VectorStr,measures:VectorStr,subDataSource:object,
     para['persent'] = persent_list
     if np.isnan(first_persent):
         score = max(first_persent-0.5,0)/0.5
-        if score!=0:
+        if not math.isclose(score, 0, rel_tol=1e-09, abs_tol=0.0):
             explain = explain_Attribution(langType,measures[0],aggrType,str(groupData.index[arg_index[0]]),breakdown[0])
             # explain = 'The '+measures[0]+' '+aggrType+' of '+groupData.index[arg_index[0]]+' is dominant in '+breakdown[0]
             para['explain'] = explain
