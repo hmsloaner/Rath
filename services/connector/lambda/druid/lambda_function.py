@@ -28,7 +28,7 @@ class basefunc:
     @staticmethod
     def druid_getmeta(database, table, schema, engine=None):
         meta_res = engine.execute(
-            'select COLUMN_NAME, DATA_TYPE from INFORMATION_SCHEMA.COLUMNS where TABLE_SCHEMA = \'' + schema + '\' and  TABLE_NAME = \'' + table + '\'').fetchall()
+            'select COLUMN_NAME, DATA_TYPE from INFORMATION_SCHEMA.COLUMNS where TABLE_SCHEMA = ?' + ' and  TABLE_NAME = ?', (schema, table, )).fetchall()
         meta = []
         i = 0
         for colData in meta_res:
