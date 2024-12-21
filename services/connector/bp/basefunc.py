@@ -337,7 +337,7 @@ class basefunc:
     @staticmethod
     def druid_getmeta(database, table, schema, engine=None,**kwargs):
         meta_res = engine.execute(
-            'select COLUMN_NAME, DATA_TYPE from INFORMATION_SCHEMA.COLUMNS where TABLE_SCHEMA = \'' + schema + '\' and  TABLE_NAME = \'' + table + '\'').fetchall()
+            'select COLUMN_NAME, DATA_TYPE from INFORMATION_SCHEMA.COLUMNS where TABLE_SCHEMA = ?' + ' and  TABLE_NAME = ?', (schema, table, )).fetchall()
         meta = []
         i = 0
         for colData in meta_res:
@@ -696,7 +696,7 @@ class basefunc:
     def postgres_gettable(uri, database, schema,**kwargs):
         engine = create_engine(uri, echo=True)
         res = engine.execute(
-            'select tablename from pg_tables where schemaname=\'' + schema + '\'').fetchall()
+            'select tablename from pg_tables where schemaname=?', (schema, )).fetchall()
         table_list = []
         for row in res:
             for item in row:
@@ -708,7 +708,7 @@ class basefunc:
     @staticmethod
     def postgres_getmeta(database, table, schema, engine=None,**kwargs):
         meta_res = engine.execute(
-            'select column_name, data_type from information_schema.columns where table_schema= \'' + schema + '\' and table_name= \'' + table + '\'').fetchall()
+            'select column_name, data_type from information_schema.columns where table_schema= ?' + ' and table_name= ?', (schema, table, )).fetchall()
         meta = []
         i = 0
         for colData in meta_res:
