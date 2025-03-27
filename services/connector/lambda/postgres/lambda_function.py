@@ -29,7 +29,7 @@ class basefunc:
     @staticmethod
     def postgres_getmeta(database, table, schema, engine=None):
         meta_res = engine.execute(
-            'select column_name, data_type from information_schema.columns where table_schema= \'' + schema + '\' and table_name= \'' + table + '\'').fetchall()
+            'select column_name, data_type from information_schema.columns where table_schema= ?' + ' and table_name= ?', (schema, table, )).fetchall()
         meta = []
         i = 0
         for colData in meta_res:
